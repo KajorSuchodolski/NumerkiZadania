@@ -2,22 +2,21 @@
 public class FalsiMethod implements FindingMethods {
 
     @Override
-    public double accurateMethod (double a, double b, double epsilon) throws Exception {
+    public double accurateMethod (double a, double b, int fun, double epsilon) throws Exception {
         Functions functions = new Functions();
-        if( (functions.sinFunction(a) * functions.sinFunction(b)) > 0) {
+        if( (functions.chooseFunction(a, fun) * functions.chooseFunction(b, fun)) > 0) {
             System.out.println("X0 does not exist!");
-//            return;
             throw new Exception("X0 does not exist!");
         }
 
         double x0 = 0;
         while (Math.abs(a - b) > epsilon) {
-            x0 = (a * functions.sinFunction(b) - b * functions.sinFunction(a)) / (functions.sinFunction(b) - functions.sinFunction(a));
+            x0 = (a * functions.chooseFunction(b, fun) - b * functions.chooseFunction(a, fun)) / (functions.chooseFunction(b, fun) - functions.chooseFunction(a, fun));
 
-            if(functions.sinFunction(x0) * functions.sinFunction(a) < 0) {
+            if(functions.chooseFunction(x0, fun) * functions.chooseFunction(a, fun) < 0) {
                 b = x0;
             }
-            else if(functions.sinFunction(x0) * functions.sinFunction(b) < 0) {
+            else if(functions.chooseFunction(x0, fun) * functions.chooseFunction(b, fun) < 0) {
                 a = x0;
             }
         }
@@ -25,21 +24,21 @@ public class FalsiMethod implements FindingMethods {
     }
 
     @Override
-    public double iterationMethod (double a, double b, int iterations) throws Exception {
+    public double iterationMethod (double a, double b, int fun, int iterations) throws Exception {
         Functions functions = new Functions();
-        if( (functions.sinFunction(a) * functions.sinFunction(b)) > 0) {
+        if( (functions.chooseFunction(a, fun) * functions.chooseFunction(b, fun)) > 0) {
             System.out.println("X0 does not exist!");
             throw new Exception("X0 does not exist!");
         }
 
         double x0 = 0;
         for (int i = 0; i < iterations; i++) {
-            x0 = (a * functions.sinFunction(b) - b * functions.sinFunction(a)) / (functions.sinFunction(b) - functions.sinFunction(a));
+            x0 = (a * functions.chooseFunction(b, fun) - b * functions.chooseFunction(a, fun)) / (functions.chooseFunction(b, fun) - functions.chooseFunction(a, fun));
 
-            if(functions.sinFunction(x0) * functions.sinFunction(a) < 0) {
+            if(functions.chooseFunction(x0, fun) * functions.chooseFunction(a, fun) < 0) {
                 b = x0;
             }
-            else if(functions.sinFunction(x0) * functions.sinFunction(b) < 0) {
+            else if(functions.chooseFunction(x0, fun) * functions.chooseFunction(b, fun) < 0) {
                 a = x0;
             }
         }

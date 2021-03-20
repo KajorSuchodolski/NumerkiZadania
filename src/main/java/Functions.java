@@ -1,13 +1,13 @@
 
 public class Functions {
 
-    public double horner(final double x, double [] factors) {
+    public double horner(final double x) {
+        double [] factors = {3, -3, 0, 0};
         double y = factors[0];
 
         for(int i = 1; i < factors.length; i++) {
             y = y * x + factors[i];
         }
-
         return y;
     }
 
@@ -32,14 +32,11 @@ public class Functions {
     }
 
     public double chooseFunction (final double x, int i) throws Exception {
-        switch (i) {
-            case 1:
-                return sinFunction(x);
-            case 2:
-                return tanFunction(x);
-
-            default:
-                throw new Exception("Out of scope");
-        }
+        return switch (i) {
+            case 1 -> sinFunction(x);
+            case 2 -> tanFunction(x);
+            case 3 -> horner(x);
+            default -> throw new Exception("Out of scope");
+        };
     }
 }
