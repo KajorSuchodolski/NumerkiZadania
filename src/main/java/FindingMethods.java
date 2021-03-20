@@ -1,6 +1,7 @@
+
 public interface FindingMethods {
 
-    public void accurateMethod(double a, double b, double epsilon);
+    public double accurateMethod(double a, double b, double epsilon) throws Exception;
 
-    public void iterationMethod(double a, double b, int iteration);
+    public double iterationMethod(double a, double b, int iteration) throws Exception;
 }
