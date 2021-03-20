@@ -29,7 +29,6 @@ public class FalsiMethod implements FindingMethods {
         Functions functions = new Functions();
         if( (functions.sinFunction(a) * functions.sinFunction(b)) > 0) {
             System.out.println("X0 does not exist!");
-//            return;
             throw new Exception("X0 does not exist!");
         }
 

@@ -37,6 +37,7 @@ public class Functions {
                 return sinFunction(x);
             case 2:
                 return tanFunction(x);
+
             default:
                 throw new Exception("Out of scope");
         }

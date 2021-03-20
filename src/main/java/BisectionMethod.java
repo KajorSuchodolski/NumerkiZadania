@@ -42,7 +42,6 @@ public class BisectionMethod implements FindingMethods {
         Functions functions = new Functions();
         if((functions.horner(a, factors) * functions.horner(b, factors)) > 0) {
             System.out.println("X0 does not exist!");
-//            return null;
             throw new Exception("X0 does not exist!");
         }
 
