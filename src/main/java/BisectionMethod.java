@@ -9,7 +9,6 @@ public class BisectionMethod implements FindingMethods {
             throw new Exception("X0 does not exist!");
         }
 
-
         double x0 = 0;
         while(Math.abs(a - b) > epsilon) {
             x0 = (a + b) / 2;
