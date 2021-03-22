@@ -1,6 +1,6 @@
 public class ExpFunction implements MathFunction {
     public double calculate (final double x) {
-        // a^x - 3
+        // 2^x - 3
         double result = 2;
         if (x == (int) x) {
             for (int i = 1; i < x; i++){

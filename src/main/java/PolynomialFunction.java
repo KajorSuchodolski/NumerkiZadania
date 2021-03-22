@@ -1,7 +1,7 @@
 
 public class PolynomialFunction implements MathFunction{
     public double calculate(final double x) {
-        double [] factors = {1, -2, -1, 30};
+        double [] factors = {1, -2, -1, 3};
         double y = factors[0];
 
         for(int i = 1; i < factors.length; i++) {

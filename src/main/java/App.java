@@ -9,38 +9,28 @@ import java.util.Scanner;
 public class App {
 
     public static void main(String[] args) throws Exception {
-
-
         MathFunction fun;
         FindingMethods find;
+        String [] functions = {"2^x - 3", "3 sin(x)", "tan(x/4)", "x^3 - 2x^2 - x + 3", "2^(cos(x)) + sin(4x-2)"};
 
-        System.out.println("Choose function: (1-4)\n");
-        System.out.println("1. 2^x - 3");
-        System.out.println("2. 3*sin(x)");
-        System.out.println("3. 2*tan(x) + 7");
-        System.out.println("4. x^3 - 2x^2 - x + 30\n");
-        System.out.println("Choose: ");
-
+        System.out.println("Choose function: (1-5)\n");
+        for (int i = 0; i < functions.length; i++) {
+            System.out.println((i + 1) + ". " + functions[i]);
+        }
+        System.out.println("\nChoose: ");
         Scanner scanner = new Scanner(System.in);
 
         int choose = scanner.nextInt();
+        String title = "'Wykres funkcji " + functions[choose - 1] + "'";
 
-        switch(choose) {
-            case 1:
-                fun = new ExpFunction();
-                break;
-            case 2:
-                fun = new SinusFunction();
-                break;
-            case 3:
-                fun = new TangensFunction();
-                break;
-            case 4:
-                fun = new PolynomialFunction();
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value!");
-        }
+        fun = switch (choose) {
+            case 1 -> new ExpFunction();
+            case 2 -> new SinusFunction();
+            case 3 -> new TangensFunction();
+            case 4 -> new PolynomialFunction();
+            case 5 -> new CompositionFunction();
+            default -> throw new IllegalStateException("Unexpected value!");
+        };
 
         System.out.println("Choose method: ");
         System.out.println("1. Bisection: ");
@@ -61,16 +51,13 @@ public class App {
         double epsilon = 0.1;
         int iteration = 0;
 
-        if(choose == 1) {
+        if (choose == 1) {
             System.out.println("Type epsilon: ");
             epsilon = scanner.nextDouble();
-        }
-
-        else {
+        } else {
             isIteration = true;
             System.out.println("Type number of iteration: ");
             iteration = scanner.nextInt();
-
         }
 
         System.out.println("Type a: ");
@@ -78,22 +65,10 @@ public class App {
         System.out.println("Type b: ");
         double b = scanner.nextDouble();
 
-
         try {
+            //JavaPlot plot = new JavaPlot("C:\\gnuplot\\bin\\gnuplot.exe");
+            JavaPlot plot = new JavaPlot();
 
-            // Zrobiłem tak duży zakres i dzielę przez 10, aby między każdymi dwoma sąsiadującymi liczbami calkowitymi
-            // na wykresie na osi x bylo wyznaczane 10 punktow dla dokladnosci wykresu
-            // dzieki temu na odleglosci <-10; 10> mamy 200 punktow
-            JavaPlot plot = new JavaPlot("C:\\gnuplot\\bin\\gnuplot.exe");
-            double[][] tab = new double[200][2];
-            for (int i = 0; i < tab.length; i++) {
-                tab[i][0] = (double) (i / 10) - 10;
-                tab[i][1] = fun.calculate((double) (i / 10) - 10);
-            }
-
-            // tu trzeba po prostu podstawic to, co wybierze uzytkownik
-            // w miejscu pointZero[0][1] = fun.calculate(x) dalem wartosc tego miejsca zerowego, aby zobaczyc jak bardzo
-            // niedokladny jest wynik, mysle ze to pomoze
             double x;
             double[][] pointZero = new double[1][2];
 
@@ -106,6 +81,13 @@ public class App {
             pointZero[0][0] = x;
             pointZero[0][1] = fun.calculate(x);
 
+            double[][] tab = new double[100][2];
+            for (int i = 0; i < tab.length; i++) {
+                double tmpX = x - 5 + ((i * 1.0) / 10);
+                tab[i][0] = tmpX;
+                tab[i][1] = fun.calculate(tmpX);
+            }
+
             // styl funkcji
             PlotStyle lineStyle = new PlotStyle();
             lineStyle.setStyle(Style.LINES);
@@ -117,8 +99,6 @@ public class App {
             pointStyle.setPointSize(2);
             pointStyle.setLineWidth(1);
 
-            // To nizej jest juz w zasadzie tez samym stylem i rysowaniem na wykresie w zaleznosci od tego
-            // co jest wyzej
             DataSetPlot funcPlot = new DataSetPlot(tab);
             DataSetPlot pointZeroPlot = new DataSetPlot(pointZero);
 
@@ -133,7 +113,7 @@ public class App {
             plot.set("xzeroaxis", "");
             plot.set("xlabel", "'x'");
             plot.set("ylabel", "'f(x)'");
-            plot.set("title", " 'Wykres funkcji'");
+            plot.set("title", title);
 
             plot.addPlot(funcPlot);
             plot.addPlot(pointZeroPlot);
@@ -146,12 +126,10 @@ public class App {
     }
 
     private static FindingMethods methodChoosing(int i) {
-
         return switch(i) {
             case 1 -> new BisectionMethod();
             case 2 -> new FalsiMethod();
             default -> null;
         };
-
     }
 }

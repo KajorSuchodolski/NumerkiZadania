@@ -7,7 +7,9 @@ public class FalsiMethod implements FindingMethods {
 
     private void calculate(MathFunction fun) {
         x0 = (rangeA * fun.calculate(rangeB) - rangeB * fun.calculate(rangeA)) / (fun.calculate(rangeB) - fun.calculate(rangeA));
-
+        System.out.println("x0: " + new DecimalFormat("#0.00000000000").format(x0));
+        System.out.println("A: " + rangeA);
+        System.out.println("B: " + rangeB);
         if(fun.calculate(x0) * fun.calculate(rangeA) < 0) {
             rangeB = x0;
         }
@@ -18,7 +20,6 @@ public class FalsiMethod implements FindingMethods {
 
     @Override
     public double accurateMethod (double a, double b, MathFunction fun, double epsilon) throws Exception {
-
         int iterations = 0;
         if( (fun.calculate(a) * fun.calculate(b)) > 0) {
             System.out.println("X0 does not exist!");
