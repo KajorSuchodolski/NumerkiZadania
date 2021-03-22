@@ -6,7 +6,7 @@ import com.panayotis.gnuplot.style.Style;
 
 public class App {
 
-    public static void main( String[] args ) throws Exception {
+    public static void main(String[] args) throws Exception {
 
         try {
             MathFunction fun = new PolynomialFunction();
@@ -16,7 +16,7 @@ public class App {
             // na wykresie na osi x bylo wyznaczane 10 punktow dla dokladnosci wykresu
             // dzieki temu na odleglosci <-10; 10> mamy 200 punktow
             JavaPlot plot = new JavaPlot();
-            double [][] tab = new double [200][2];
+            double[][] tab = new double[200][2];
             for (int i = 0; i < tab.length; i++) {
                 tab[i][0] = (double) (i / 10) - 10;
                 tab[i][1] = fun.calculate((double) (i / 10) - 10);
@@ -25,7 +25,7 @@ public class App {
             // tu trzeba po prostu podstawic to, co wybierze uzytkownik
             // w miejscu pointZero[0][1] = fun.calculate(x) dalem wartosc tego miejsca zerowego, aby zobaczyc jak bardzo
             // niedokladny jest wynik, mysle ze to pomoze
-            double [][] pointZero = new double [1][2];
+            double[][] pointZero = new double[1][2];
             double x = find.iterationMethod(-5, 0, fun, 150);
             pointZero[0][0] = x;
             pointZero[0][1] = fun.calculate(x);

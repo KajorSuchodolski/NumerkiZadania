@@ -1,5 +1,19 @@
 
 public class FalsiMethod implements FindingMethods {
+    private double x0;
+    private double rangeA;
+    private double rangeB;
+
+    private void calculate(MathFunction fun) {
+        x0 = (rangeA * fun.calculate(rangeB) - rangeB * fun.calculate(rangeA)) / (fun.calculate(rangeB) - fun.calculate(rangeA));
+
+        if(fun.calculate(x0) * fun.calculate(rangeA) < 0) {
+            rangeB = x0;
+        }
+        else if(fun.calculate(x0) * fun.calculate(rangeB) < 0) {
+            rangeA = x0;
+        }
+    }
 
     @Override
     public double accurateMethod (double a, double b, MathFunction fun, double epsilon) throws Exception {
@@ -8,16 +22,11 @@ public class FalsiMethod implements FindingMethods {
             throw new Exception("X0 does not exist!");
         }
 
-        double x0 = 0;
-        while (Math.abs(a - b) > epsilon) {
-            x0 = (a * fun.calculate(b) - b * fun.calculate(a) / (fun.calculate(b) - fun.calculate(a)));
-
-            if(fun.calculate(x0) * fun.calculate(a) < 0) {
-                b = x0;
-            }
-            else if(fun.calculate(x0) * fun.calculate(b) < 0) {
-                a = x0;
-            }
+        x0 = 0;
+        rangeA = a;
+        rangeB = b;
+        while (Math.abs(rangeA - rangeB) > epsilon) {
+            calculate(fun);
         }
         return x0;
     }
@@ -29,16 +38,11 @@ public class FalsiMethod implements FindingMethods {
             throw new Exception("X0 does not exist!");
         }
 
-        double x0 = 0;
+        x0 = 0;
+        rangeA = a;
+        rangeB = b;
         for (int i = 0; i < iterations; i++) {
-            x0 = (a * fun.calculate(b) - b * fun.calculate(a)) / (fun.calculate(b) - fun.calculate(a));
-
-            if(fun.calculate(x0) * fun.calculate(a) < 0) {
-                b = x0;
-            }
-            else if(fun.calculate(x0) * fun.calculate(b) < 0) {
-                a = x0;
-            }
+            calculate(fun);
         }
         return x0;
     }

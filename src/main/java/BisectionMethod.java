@@ -1,5 +1,19 @@
 
 public class BisectionMethod implements FindingMethods {
+    private double x0;
+    private double rangeA;
+    private double rangeB;
+
+    private void calculate(MathFunction fun) {
+        x0 = (rangeA + rangeB) / 2;
+
+        if(fun.calculate(x0) * fun.calculate(rangeA) < 0) {
+            rangeB = x0;
+        }
+        else if(fun.calculate(x0) * fun.calculate(rangeB) < 0) {
+            rangeA = x0;
+        }
+    }
 
     @Override
     public double accurateMethod(double a, double b, MathFunction fun, double epsilon) throws Exception {
@@ -8,16 +22,11 @@ public class BisectionMethod implements FindingMethods {
             throw new Exception("X0 does not exist!");
         }
 
-        double x0 = 0;
+        x0 = 0;
+        rangeA = a;
+        rangeB = b;
         while(Math.abs(a - b) > epsilon) {
-            x0 = (a + b) / 2;
-
-            if(fun.calculate(x0) * fun.calculate(a) < 0) {
-                b = x0;
-            }
-            else if(fun.calculate(x0) * fun.calculate(b) < 0) {
-                a = x0;
-            }
+            calculate(fun);
         }
         return x0;
     }
@@ -29,16 +38,11 @@ public class BisectionMethod implements FindingMethods {
             throw new Exception("X0 does not exist!");
         }
 
-        double x0 = 0;
+        x0 = 0;
+        rangeA = a;
+        rangeB = b;
         for(int i = 0; i < iterations; i++) {
-            x0 = (a + b) / 2;
-
-            if(fun.calculate(x0) * fun.calculate(a) < 0) {
-                b = x0;
-            }
-            else if(fun.calculate(x0) * fun.calculate(b) < 0)  {
-                a = x0;
-            }
+            calculate(fun);
         }
         return x0;
     }
