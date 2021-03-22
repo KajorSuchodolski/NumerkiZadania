@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 
 public class FalsiMethod implements FindingMethods {
     private double x0;
@@ -17,6 +18,8 @@ public class FalsiMethod implements FindingMethods {
 
     @Override
     public double accurateMethod (double a, double b, MathFunction fun, double epsilon) throws Exception {
+
+        int iterations = 0;
         if( (fun.calculate(a) * fun.calculate(b)) > 0) {
             System.out.println("X0 does not exist!");
             throw new Exception("X0 does not exist!");
@@ -27,7 +30,12 @@ public class FalsiMethod implements FindingMethods {
         rangeB = b;
         while (Math.abs(rangeA - rangeB) > epsilon) {
             calculate(fun);
+            iterations++;
         }
+        System.out.println("Epsilon = " + new DecimalFormat("#0.00000000000").format(epsilon));
+        System.out.println("x0 = " + new DecimalFormat("#0.00000000000").format(x0));
+        System.out.println(("f(x0) = " + new DecimalFormat("#0.00000000000").format(fun.calculate(x0)) ));
+        System.out.println("Number of iterations: " + iterations);
         return x0;
     }
 
@@ -44,6 +52,9 @@ public class FalsiMethod implements FindingMethods {
         for (int i = 0; i < iterations; i++) {
             calculate(fun);
         }
+        System.out.println("x0 = " + new DecimalFormat("#0.00000000000").format(x0));
+        System.out.println(("f(x0) = " + new DecimalFormat("#0.00000000000").format(fun.calculate(x0)) ));
+        System.out.println("Number of iterations: " + iterations);
         return x0;
     }
 

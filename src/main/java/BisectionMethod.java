@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 
 public class BisectionMethod implements FindingMethods {
     private double x0;
@@ -22,12 +23,18 @@ public class BisectionMethod implements FindingMethods {
             throw new Exception("X0 does not exist!");
         }
 
+        int iterations = 0;
         x0 = 0;
         rangeA = a;
         rangeB = b;
-        while(Math.abs(a - b) > epsilon) {
+        while(Math.abs(rangeA - rangeB) > epsilon) {
             calculate(fun);
+            iterations++;
         }
+        System.out.println("Epsilon = " + new DecimalFormat("#0.00000000000").format(epsilon));
+        System.out.println("x0 = " + new DecimalFormat("#0.00000000000").format(x0));
+        System.out.println(("f(x0) = " + new DecimalFormat("#0.00000000000").format(fun.calculate(x0)) ));
+        System.out.println("Number of iterations: " + iterations);
         return x0;
     }
 
@@ -44,6 +51,10 @@ public class BisectionMethod implements FindingMethods {
         for(int i = 0; i < iterations; i++) {
             calculate(fun);
         }
+
+        System.out.println("x0 = " + new DecimalFormat("#0.00000000000").format(x0));
+        System.out.println(("f(x0) = " + new DecimalFormat("#0.00000000000").format(fun.calculate(x0)) ));
+        System.out.println("Number of iterations: " + iterations);
         return x0;
     }
 }
