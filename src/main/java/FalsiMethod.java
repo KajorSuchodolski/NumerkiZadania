@@ -4,12 +4,13 @@ public class FalsiMethod implements FindingMethods {
     private double x0;
     private double rangeA;
     private double rangeB;
+    private double diff;
 
     private void calculate(MathFunction fun) {
-        x0 = (rangeA * fun.calculate(rangeB) - rangeB * fun.calculate(rangeA)) / (fun.calculate(rangeB) - fun.calculate(rangeA));
-        System.out.println("x0: " + new DecimalFormat("#0.00000000000").format(x0));
-        System.out.println("A: " + rangeA);
-        System.out.println("B: " + rangeB);
+        double newX0 = rangeA - (fun.calculate(rangeA) / (fun.calculate(rangeB) - fun.calculate(rangeA))) * (rangeB - rangeA);
+        diff = x0 - newX0;
+        x0 = newX0;
+
         if(fun.calculate(x0) * fun.calculate(rangeA) < 0) {
             rangeB = x0;
         }
@@ -29,10 +30,12 @@ public class FalsiMethod implements FindingMethods {
         x0 = 0;
         rangeA = a;
         rangeB = b;
-        while (Math.abs(rangeA - rangeB) > epsilon) {
+
+        do {
             calculate(fun);
             iterations++;
-        }
+        } while (Math.abs(diff) > epsilon);
+
         System.out.println("Epsilon = " + new DecimalFormat("#0.00000000000").format(epsilon));
         System.out.println("x0 = " + new DecimalFormat("#0.00000000000").format(x0));
         System.out.println(("f(x0) = " + new DecimalFormat("#0.00000000000").format(fun.calculate(x0)) ));

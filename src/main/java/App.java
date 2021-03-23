@@ -11,7 +11,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         MathFunction fun;
         FindingMethods find;
-        String [] functions = {"2^x - 3", "3 sin(x)", "tan(x/4)", "x^3 - 2x^2 - x + 3", "2^(cos(x)) + sin(4x-2)"};
+        String [] functions = {"2^x - 3", "3 sin(x - 1,5)", "tan(x/4)", "x^3 - 2x^2 - x + 1", "2^(cos(x)) + sin(4x-2)"};
 
         System.out.println("Choose function: (1-5)\n");
         for (int i = 0; i < functions.length; i++) {
@@ -37,7 +37,6 @@ public class App {
         System.out.println("2. Falsi: ");
 
         choose = scanner.nextInt();
-
         find = methodChoosing(choose);
 
         System.out.println("Choose how x0 will be found: ");
@@ -47,7 +46,6 @@ public class App {
         choose = scanner.nextInt();
 
         boolean isIteration = false;
-
         double epsilon = 0.1;
         int iteration = 0;
 
