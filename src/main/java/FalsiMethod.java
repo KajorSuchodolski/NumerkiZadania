@@ -36,9 +36,9 @@ public class FalsiMethod implements FindingMethods {
             iterations++;
         } while (Math.abs(diff) > epsilon);
 
-        System.out.println("Epsilon = " + new DecimalFormat("#0.00000000000").format(epsilon));
-        System.out.println("x0 = " + new DecimalFormat("#0.00000000000").format(x0));
-        System.out.println(("f(x0) = " + new DecimalFormat("#0.00000000000").format(fun.calculate(x0)) ));
+        System.out.println("Epsilon = " + epsilon);
+        System.out.println("x0 = " + x0);
+        System.out.println(("f(x0) = " + x0));
         System.out.println("Number of iterations: " + iterations);
         return x0;
     }
@@ -56,8 +56,8 @@ public class FalsiMethod implements FindingMethods {
         for (int i = 0; i < iterations; i++) {
             calculate(fun);
         }
-        System.out.println("x0 = " + new DecimalFormat("#0.00000000000").format(x0));
-        System.out.println(("f(x0) = " + new DecimalFormat("#0.00000000000").format(fun.calculate(x0)) ));
+        System.out.println("x0 = " + x0);
+        System.out.println(("f(x0) = " + x0));
         System.out.println("Number of iterations: " + iterations);
         return x0;
     }

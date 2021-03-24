@@ -64,8 +64,8 @@ public class App {
         double b = scanner.nextDouble();
 
         try {
-            //JavaPlot plot = new JavaPlot("C:\\gnuplot\\bin\\gnuplot.exe");
-            JavaPlot plot = new JavaPlot();
+            JavaPlot plot = new JavaPlot("C:\\gnuplot2\\bin\\gnuplot.exe");
+//            JavaPlot plot = new JavaPlot();
 
             double x;
             double[][] pointZero = new double[1][2];
