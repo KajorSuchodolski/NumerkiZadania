@@ -12,10 +12,16 @@ public class App {
     public static void main(String[] args) throws Exception {
         try {
             Gaussian gaussian = new Gaussian("src\\main\\java\\input.txt");
+
+            double [] dupa = gaussian.solve();
+
+            System.out.println(dupa[0]);
+            System.out.println(dupa[1]);
+            System.out.println(dupa[2]);
+
         } catch (Exception e) {
             System.out.println(e);
         }
-
 
     }
 }

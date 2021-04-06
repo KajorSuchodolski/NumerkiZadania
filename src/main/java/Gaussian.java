@@ -39,26 +39,39 @@ public class Gaussian {
     }
 
     public double[] solve () throws Exception {
+
         double[] output = new double [width - 1];
 
-        for (int row = 0; row < matrix.length; row++) {
-            for (int col = row + 1; col < width; col ++) {
+
+        for (int row = 0; row < width - 2; row++) {
+            for (int col = row + 1; col < width - 1; col ++) {
                 if( Math.abs(matrix[row][row]) < eps ) {
                     throw new Exception("Gauss nie zadziała");
                 }
                 double multiplier = -matrix[col][row] / matrix[row][row];
-                for (int k = row + 1; k <= width; k++) {
+                for (int k = row; k <= width - 1; k++) {
                     matrix[col][k] += multiplier * matrix[row][k];
+                    System.out.println(getMatrix());
+
                 }
             }
         }
 
-        //System.out.println(getMatrix());
+        double s;
 
-//        for (int i = coefNum - 1; i >= 0; i--) {
-//            double s = co
-//        }
-        return null;
+        for (int row = width - 2; row >= 0; row--) {
+
+            s = matrix[row][width - 1];
+
+            for(int col = width - 2; col >= row + 1; col-- ) {
+                s -= matrix[row][col] * output[col];
+//                if(Math.abs(matrix[row][row]) < eps) {
+//                    throw new Exception("Gauss nie zadziala");
+//                }
+                output[row] = s / matrix[row][row];
+            }
+        }
+        return output;
     }
 
     public void switchRows (int rowA, int rowB) {
