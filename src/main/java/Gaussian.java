@@ -37,13 +37,27 @@ public class Gaussian {
         }
     }
 
+    private void partialChoice(int x) {
+        for (int y = x + 1; y < width -1; y++) {
+            if (Math.abs(matrix[y][x]) > epsilon) {
+                for (int i = 0; i < width; i++) {
+                    double tmp = matrix[y][i];
+                    matrix[y][i] = matrix[x][i];
+                    matrix[x][i] = tmp;
+                }
+                return;
+            }
+        }
+    }
+
     public double[] solve () throws Exception {
         double[] output = new double [width - 1];
         for (int x = 0; x < width - 2; x++) {
+            if( Math.abs(matrix[x][x]) < epsilon) {
+                // Czesciowy wybor elementu podstawowego
+                partialChoice(x);
+            }
             for (int y = x + 1; y < width - 1; y ++) {
-                if( Math.abs(matrix[x][x]) < epsilon) {
-                    throw new Exception("Wartości na przekątnej nie mogą być bliskie zeru");
-                }
                 double multiplier = -1 * (matrix[y][x] / matrix[x][x]);
                 for (int z = x; z < width; z++) {
                     matrix[y][z] += multiplier * matrix[x][z];
