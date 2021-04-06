@@ -13,11 +13,10 @@ public class App {
         try {
             Gaussian gaussian = new Gaussian("src\\main\\java\\input.txt");
 
-            double [] dupa = gaussian.solve();
-
-            System.out.println(dupa[0]);
-            System.out.println(dupa[1]);
-            System.out.println(dupa[2]);
+            double [] result = gaussian.solve();
+            for (int i = 0; i < result.length; i++) {
+                System.out.println("X" + (i + 1) + " = " + result[i]);
+            }
 
         } catch (Exception e) {
             System.out.println(e);

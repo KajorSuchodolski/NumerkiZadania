@@ -65,11 +65,11 @@ public class Gaussian {
 
             for(int col = width - 2; col >= row + 1; col-- ) {
                 s -= matrix[row][col] * output[col];
-//                if(Math.abs(matrix[row][row]) < eps) {
-//                    throw new Exception("Gauss nie zadziala");
-//                }
-                output[row] = s / matrix[row][row];
             }
+            if(Math.abs(matrix[row][row]) < eps) {
+                throw new Exception("Gauss nie zadziala");
+            }
+            output[row] = s / matrix[row][row];
         }
         return output;
     }
