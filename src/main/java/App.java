@@ -1,17 +1,18 @@
 
-import com.panayotis.gnuplot.JavaPlot;
-import com.panayotis.gnuplot.plot.DataSetPlot;
-import com.panayotis.gnuplot.style.PlotStyle;
-import com.panayotis.gnuplot.style.Style;
+// Program wykonany przez:
+// Michał Dzieciuchowicz    229874
+// Radosław Zyzik           230049
 
-import java.io.File;
-import java.util.Scanner;
+// Zadanie 2 - Rozwiązywanie układów równań metodą eliminacji Gaussa
 
 public class App {
 
     public static void main(String[] args) throws Exception {
         try {
             Gaussian gaussian = new Gaussian("src\\main\\java\\input.txt");
+
+            System.out.println("Obliczanie rozwiązań układu równań o poniższej formie macierzowej:");
+            System.out.println(gaussian.getMatrix());
 
             double [] result = gaussian.solve();
             for (int i = 0; i < result.length; i++) {

@@ -6,8 +6,8 @@ import java.util.stream.Stream;
 
 public class Gaussian {
     private double matrix[][];   // lewa strona
-    private int width;               // ilosc wspolczynnikow
-    private double eps = 1e-12;
+    private int width;           // ilosc wspolczynnikow
+    private double epsilon = 1e-8;
 
     public Gaussian (String inputfile) throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -31,7 +31,6 @@ public class Gaussian {
                 this.matrix[i][num] = Double.parseDouble(splitRow[num]);
             }
         }
-        System.out.println(this.getMatrix());
 
         if ((width - 1) != matrix.length) {
             throw new Exception("Błędne wymiary macierzy"); // ilosc wierszy musi byc rowna w macierzy lewej i prawej
@@ -39,70 +38,47 @@ public class Gaussian {
     }
 
     public double[] solve () throws Exception {
-
         double[] output = new double [width - 1];
-
-
-        for (int row = 0; row < width - 2; row++) {
-            for (int col = row + 1; col < width - 1; col ++) {
-                if( Math.abs(matrix[row][row]) < eps ) {
-                    throw new Exception("Gauss nie zadziała");
+        for (int x = 0; x < width - 2; x++) {
+            for (int y = x + 1; y < width - 1; y ++) {
+                if( Math.abs(matrix[x][x]) < epsilon) {
+                    throw new Exception("Wartości na przekątnej nie mogą być bliskie zeru");
                 }
-                double multiplier = -matrix[col][row] / matrix[row][row];
-                for (int k = row; k <= width - 1; k++) {
-                    matrix[col][k] += multiplier * matrix[row][k];
-                    System.out.println(getMatrix());
-
+                double multiplier = -1 * (matrix[y][x] / matrix[x][x]);
+                for (int z = x; z < width; z++) {
+                    matrix[y][z] += multiplier * matrix[x][z];
                 }
             }
         }
 
-        double s;
-
-        for (int row = width - 2; row >= 0; row--) {
-
-            s = matrix[row][width - 1];
-
-            for(int col = width - 2; col >= row + 1; col-- ) {
-                s -= matrix[row][col] * output[col];
+        double s = 0;
+        for (int x = width - 2; x >= 0; x--) {
+            if(Math.abs(matrix[x][x]) < epsilon) {
+                if (Math.abs(matrix[x][x+1]) < epsilon) {
+                    throw new Exception("Układ nieoznaczony");
+                } else {
+                    throw new Exception("Układ sprzeczny");
+                }
             }
-            if(Math.abs(matrix[row][row]) < eps) {
-                throw new Exception("Gauss nie zadziala");
+            s = matrix[x][width - 1];
+
+            for(int y = width - 2; y >= x + 1; y-- ) {
+                s -= matrix[x][y] * output[y];
             }
-            output[row] = s / matrix[row][row];
+            output[x] = s / matrix[x][x];
         }
         return output;
     }
 
-    public void switchRows (int rowA, int rowB) {
-        for (int i = 0; i < width + 1; i++) {
-            double tmp = matrix[rowA][i];
-            matrix[rowA][i] = matrix[rowB][i];
-            matrix[rowB][i] = tmp;
-        }
-    }
-
-    public void addRows (int rowA, int rowB, double multiplier) {
-        for (int i = 0; i < width + 1; i++) {
-            matrix[rowA][i] += matrix[rowB][i] * multiplier;
-        }
-    }
-
-    public void multiplyRow (int row, double multiplier) {
-        for (int i = 0; i < width + 1; i++) {
-            matrix[row][i] *= multiplier;
-        }
-    }
-
     public String getMatrix () {
-        StringBuilder outp = new StringBuilder();
+        StringBuilder output = new StringBuilder();
         for (int i = 0; i < matrix.length; i++) {
             int j;
             for (j = 0; j < width - 1; j++) {
-                outp.append(matrix[i][j]).append(" ");
+                output.append(matrix[i][j]).append(" ");
             }
-            outp.append("| ").append(matrix[i][j]).append("\n");
+            output.append("| ").append(matrix[i][j]).append("\n");
         }
-        return outp.toString();
+        return output.toString();
     }
 }
