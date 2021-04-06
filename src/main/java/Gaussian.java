@@ -5,9 +5,9 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 public class Gaussian {
-    private double coefficients[][];   // lewa strona
-    private double values[];          // prawa strona     wyniki poszczegolnych rownan (to co jest za znakiem =)
-    private int coefNum;               // ilosc wspolczynnikow
+    private double matrix[][];   // lewa strona
+    private int width;               // ilosc wspolczynnikow
+    private double eps = 1e-12;
 
     public Gaussian (String inputfile) throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -20,65 +20,75 @@ public class Gaussian {
         }
         String[] rows = builder.toString().split("\n");
 
-        this.coefNum = rows[0].split(", ").length;
-        this.coefficients = new double [rows.length][this.coefNum];
-        this.values = new double [rows.length];
+        this.width = rows[0].split(", ").length;
+        this.matrix = new double [rows.length][this.width];
 
-        // Konwersja na tablicę typu double
+//      Konwersja na tablicę typu double
         for (int i = 0; i < rows.length; i++) {
-            String[] splitRow = rows[i].split("\\| ");
+            String[] splitRow = rows[i].split(", ");
 
-            this.values[i] = Double.parseDouble(splitRow[1]);
-
-            String[] coeffStr = splitRow[0].split(", ");
-            for (int c = 0; c < coeffStr.length; c++) {
-                this.coefficients[i][c] = Double.parseDouble(coeffStr[c]);
+            for (int num = 0; num < splitRow.length; num++) {
+                this.matrix[i][num] = Double.parseDouble(splitRow[num]);
             }
         }
         System.out.println(this.getMatrix());
 
-        if (coefficients.length != values.length || coefNum != coefficients.length) {
+        if ((width - 1) != matrix.length) {
             throw new Exception("Błędne wymiary macierzy"); // ilosc wierszy musi byc rowna w macierzy lewej i prawej
         }
     }
 
-    double[] solve () {
+    public double[] solve () throws Exception {
+        double[] output = new double [width - 1];
+
+        for (int row = 0; row < matrix.length; row++) {
+            for (int col = row + 1; col < width; col ++) {
+                if( Math.abs(matrix[row][row]) < eps ) {
+                    throw new Exception("Gauss nie zadziała");
+                }
+                double multiplier = -matrix[col][row] / matrix[row][row];
+                for (int k = row + 1; k <= width; k++) {
+                    matrix[col][k] += multiplier * matrix[row][k];
+                }
+            }
+        }
+
+        //System.out.println(getMatrix());
+
+//        for (int i = coefNum - 1; i >= 0; i--) {
+//            double s = co
+//        }
         return null;
     }
 
-    void switchRows (int rowA, int rowB) {
-        for (int i = 0; i < coefNum; i++) {
-            double tmp = coefficients[rowA][i];
-            coefficients[rowA][i] = coefficients[rowB][i];
-            coefficients[rowB][i] = tmp;
-
-            tmp = values[rowA];
-            values[rowA] = values[rowB];
-            values[rowB] = tmp;
+    public void switchRows (int rowA, int rowB) {
+        for (int i = 0; i < width + 1; i++) {
+            double tmp = matrix[rowA][i];
+            matrix[rowA][i] = matrix[rowB][i];
+            matrix[rowB][i] = tmp;
         }
     }
 
-    void addRows (int rowA, int rowB, double multiplier) {
-        for (int i = 0; i < coefNum; i++) {
-            coefficients[rowA][i] += coefficients[rowB][i] * multiplier;
+    public void addRows (int rowA, int rowB, double multiplier) {
+        for (int i = 0; i < width + 1; i++) {
+            matrix[rowA][i] += matrix[rowB][i] * multiplier;
         }
-        values[rowA] += values[rowB] * multiplier;
     }
 
-    void multiplyRow (int row, double multiplier) {
-        for (int i = 0; i < coefNum; i++) {
-            coefficients[row][i] *= multiplier;
+    public void multiplyRow (int row, double multiplier) {
+        for (int i = 0; i < width + 1; i++) {
+            matrix[row][i] *= multiplier;
         }
-        values[row] *= multiplier;
     }
 
-    String getMatrix () {
+    public String getMatrix () {
         StringBuilder outp = new StringBuilder();
-        for (int i = 0; i < coefficients.length; i++) {
-            for (int j = 0; j < coefNum; j++) {
-                outp.append(coefficients[i][j]).append(" ");
+        for (int i = 0; i < matrix.length; i++) {
+            int j;
+            for (j = 0; j < width - 1; j++) {
+                outp.append(matrix[i][j]).append(" ");
             }
-            outp.append("| ").append(values[i]).append("\n");
+            outp.append("| ").append(matrix[i][j]).append("\n");
         }
         return outp.toString();
     }
