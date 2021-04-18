@@ -17,11 +17,11 @@ public class App {
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("Choose function: ");
-            System.out.println("1. ");
-            System.out.println("2. ");
-            System.out.println("3. ");
-            System.out.println("4. ");
-            System.out.println("5. ");
+            System.out.println("1. Linear:  ");
+            System.out.println("2. Absolute: ");
+            System.out.println("3. Polynomial: ");
+            System.out.println("4. Trygonometric: ");
+            System.out.println("5. Composition: ");
 
             int fun = scanner.nextInt();
 
@@ -43,6 +43,7 @@ public class App {
 
             //
             JavaPlot plot = new JavaPlot("C:\\gnuplot\\bin\\gnuplot.exe");
+//            JavaPlot plot = new JavaPlot();
 
             Newton newton = new Newton(a, b, n, function);
 
@@ -78,18 +79,23 @@ public class App {
 
             //
             functionPlot.setPlotStyle(functionStyle);
+            functionPlot.setTitle("Function");
+
             interPlot.setPlotStyle(interStyle);
+            interPlot.setTitle("Interpolation");
+
             nodePlot.setPlotStyle(nodesStyle);
+            nodePlot.setTitle("Chebyshev nodes");
 
             //DO POPRAWY TO
             plot.setKey(JavaPlot.Key.OUTSIDE);
             plot.set("xlabel", "'x'");
             plot.set("ylabel", "'f(x)'");
-            plot.set("title", "'Funkcja'");
+            plot.set("title", "'Graph'");
 
 
             for(int i = 0; i < newton.getNodes().length; i++) {
-                System.out.println(newton.getNodes()[i][0] + " " + newton.getNodes()[i][1]);
+                System.out.println("x" + (i+1) + ": " + newton.getNodes()[i][0] + " y" + (i+1) + ": " + newton.getNodes()[i][1]);
             }
 
             //

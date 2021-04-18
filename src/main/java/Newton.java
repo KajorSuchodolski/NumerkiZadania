@@ -87,7 +87,6 @@ public class Newton {
         for(int i = 0; i < iX.size() ; i++) {
             interpolation[i][0] = iX.get(i);
             interpolation[i][1] = iY.get(i);
-
         }
 
         return interpolation;
