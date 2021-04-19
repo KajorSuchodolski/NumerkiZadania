@@ -1,13 +1,17 @@
 public class PolynomialFunction implements MathFunction {
 
+    private double[] factors;
+
+    public PolynomialFunction(double[] factors) {
+        this.factors = factors;
+    }
+
     @Override
     public double calculate( double x ) {
+        double y = factors[factors.length - 1];
 
-        double [] factors = {3, -2, 0, 1};
-        double y = factors[0];
-
-        for(int i = 1; i < factors.length; i++) {
-            y = y * x + factors[i];
+        for(int i = factors.length - 2; i >= 0; i--) {
+            y += factors[i] * x;
         }
 
         return y;
