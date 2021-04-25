@@ -8,10 +8,11 @@ public class PolynomialFunction implements MathFunction {
 
     @Override
     public double calculate( double x ) {
-        double y = factors[factors.length - 1];
 
-        for(int i = factors.length - 2; i >= 0; i--) {
-            y += factors[i] * x;
+        double y = factors[0];
+
+        for(int i = 1; i < factors.length; i++) {
+            y = y * x + factors[i];
         }
 
         return y;

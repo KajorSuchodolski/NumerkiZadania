@@ -3,33 +3,30 @@ import com.panayotis.gnuplot.plot.DataSetPlot;
 import com.panayotis.gnuplot.style.PlotStyle;
 import com.panayotis.gnuplot.style.Style;
 
-import javax.xml.crypto.Data;
-import java.io.File;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class App {
-
     public static void main(String[] args) throws Exception {
         try {
             Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Choose function: ");
-            System.out.println("1. Linear:  ");
-            System.out.println("2. Absolute: ");
-            System.out.println("3. Polynomial: ");
-            System.out.println("4. Trygonometric: ");
+            System.out.println("Do you want to use complex function? If yes, insert 1");
+            int complex = scanner.nextInt();
 
-            int fun = scanner.nextInt();
+            MathFunction inner = null;
+            MathFunction outer = null;
 
-            MathFunction function = switch(fun) {
-                case 1 -> new LinearFunction(1, 2);
-                case 2 -> new AbsoluteFunction();
-                case 3 -> new PolynomialFunction(new double[]{1, 2, 3, 4});
-                case 4 -> new TrygonometricFunction(1, 2, 0.5);
-                default -> throw new NullPointerException("Unexpected value of function!");
-            };
+            if (complex == 1) {
+                System.out.println("Choose inner function");
+                inner = TUIMethods.chooseFunction();
+                System.out.println("Choose outer function");
+                outer = TUIMethods.chooseFunction();
+            } else {
+                System.out.println("Choose function");
+                inner = TUIMethods.chooseFunction();
+            }
 
+            System.out.println("Defining range <a;b>");
             System.out.println("Type a: ");
             int a = scanner.nextInt();
             System.out.println("Type b: ");
@@ -40,17 +37,21 @@ public class App {
  //         JavaPlot plot = new JavaPlot("C:\\gnuplot\\bin\\gnuplot.exe");
             JavaPlot plot = new JavaPlot();
 
-            Newton newton = new Newton(a, b, n, function);
+            Newton newton = new Newton(a, b, n, inner, outer);
 
-            double [][] y = new double[100][2];
-            for(int i = 0; i < y.length; i++) {
-                double tmpX = -5 + ((i * 1.0) / 10);
+            int range = Math.abs(b - a) * 100 + 1;
+            double [][] y = new double[range][2];
+            for(int i = 0; i < range; i++) {
+                double tmpX = a + i * 0.01;
                 y[i][0] = tmpX;
-                y[i][1] = function.calculate(tmpX);
+                if (outer == null) {
+                    y[i][1] = inner.calculate(tmpX);
+                } else {
+                    y[i][1] = outer.calculate(inner.calculate(tmpX));
+                }
             }
 
             double [][] interpolation = newton.interpolation();
-
 
             PlotStyle functionStyle = new PlotStyle();
             functionStyle.setStyle(Style.LINES);
@@ -70,10 +71,8 @@ public class App {
 
             functionPlot.setPlotStyle(functionStyle);
             functionPlot.setTitle("Function");
-
             interPlot.setPlotStyle(interStyle);
             interPlot.setTitle("Interpolation");
-
             nodePlot.setPlotStyle(nodesStyle);
             nodePlot.setTitle("Chebyshev nodes");
 
@@ -81,7 +80,6 @@ public class App {
             plot.set("xlabel", "'x'");
             plot.set("ylabel", "'f(x)'");
             plot.set("title", "'Graph'");
-
 
             for(int i = 0; i < newton.getNodes().length; i++) {
                 System.out.println("x" + (i+1) + ": " + newton.getNodes()[i][0] + " y" + (i+1) + ": " + newton.getNodes()[i][1]);
