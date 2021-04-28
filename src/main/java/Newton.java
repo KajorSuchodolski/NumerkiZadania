@@ -38,7 +38,7 @@ public class Newton {
     public double [] factors() {
         double [] factors = new double[n+1];
 
-        for(int i=0; i <= n; i++) {
+        for(int i=0; i < n; i++) {
             if (outer == null) {
                 factors[i] = inner.calculate(nodes[i][0]);
             } else {
@@ -62,7 +62,7 @@ public class Newton {
         double mul = 0;
         double sum = 0;
 
-        for(double x = a; x <= b; x += 0.01) {
+        for(double x = a; x < b + 0.01; x += 0.01) {
             iX.add(x);
             for(int i = 0; i <= n; i++) {
                 if(factors[i] != 0) {
