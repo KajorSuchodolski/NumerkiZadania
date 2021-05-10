@@ -34,7 +34,7 @@ public class TUIMethods {
                 function = new PolynomialFunction(factors);
             }
             case 4 -> {
-                System.out.println("Sinus function a * sin(bx + c)");
+                System.out.println("Cosinus function a * cos(bx + c)");
                 System.out.println("Insert a");
                 double a = scanner.nextDouble();
                 System.out.println("Insert b");

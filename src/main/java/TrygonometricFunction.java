@@ -10,6 +10,6 @@ public class TrygonometricFunction implements MathFunction {
 
     @Override
     public double calculate( double x ) {
-        return a * Math.sin( b * x + c);
+        return a * Math.cos( b * x + c);
     }
 }

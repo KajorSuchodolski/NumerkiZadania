@@ -12,19 +12,17 @@ public class App {
         try {
             Scanner scanner = new Scanner(System.in);
 
-            MathFunction function = null;
-
             System.out.println("Choose function");
-            function = TUIMethods.chooseFunction();
+            MathFunction function = TUIMethods.chooseFunction();
 
             Integrals integrals = new Integrals();
 
             System.out.println("Type number of nodes: ");
             int n = scanner.nextInt();
-            System.out.println("Do you want to use Gaussian method? [y/n]");
-            double res = (scanner.next().charAt(0) == 'y') ? integrals.GaussChebyshev(function,  n) : integrals.Simpson(function, -1, 1, eps);
 
-            System.out.println("Integral value: " + res);
+            System.out.println("Value for Gassian-Chebyshev: " + integrals.GaussChebyshev(function,  n));
+            System.out.println("Value for Simpson: " + integrals.getSimpsonLimit(function, eps));
+
         } catch(Exception e) {
             System.out.println(e);
         }
