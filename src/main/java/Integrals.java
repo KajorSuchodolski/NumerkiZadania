@@ -7,11 +7,10 @@ public class Integrals {
     public double GaussChebyshev(MathFunction function, int nodes) {
         double res = 0;
         for (int i = 1; i <= nodes; i++) {
-            double weight = Math.PI / nodes;
-            double node = - Math.cos(((2 * i - 1) * Math.PI) / (2 * nodes));
-            res += weight * function.calculate(node);
+            double node = Math.cos((2 * i - 1) * Math.PI / (2 * nodes));
+            res += function.calculate(node);
         }
-        return res;
+        return res * Math.PI / (nodes);
     }
 
     public double CalcSimpson (MathFunction function, double a, double b, double eps, boolean withWeight) {
@@ -21,7 +20,7 @@ public class Integrals {
         do {
             prev = res;
             m *= 2;
-            double h = (b - a) / m;
+            double h = (b - a) / m; // dlugosc podpodziału
 
             if (withWeight) {
                 res = multiplyByWeight(function, a) + multiplyByWeight(function, b);
@@ -41,25 +40,25 @@ public class Integrals {
         return res / 3;
     }
 
-    public double NewtonCotes (MathFunction function, double eps, boolean withWeight) {
+    public double NewtonCotes (MathFunction function, int poczatek, int koniec, double eps, boolean withWeight) {
         double a = 0;
-        double b = 0.5;
+        double b = koniec / 2d;
         double diff = 0; // różnica między iteracjami - do warunku końcowego
         double res = 0;
         do {
             diff = CalcSimpson(function, a, b, eps, withWeight);
             res += diff;
             a = b;
-            b += (1 - b) / 2;
+            b += (koniec - b) / 2;
         } while (Math.abs(diff) > eps);
 
-        a = -0.5;
+        a = poczatek / 2d;
         b = 0;
         do {
             diff = CalcSimpson(function, a, b, eps, withWeight);
             res += diff;
             b = a;
-            a -= (1 - Math.abs(b)) / 2;
+            a -= (koniec - Math.abs(b)) / 2;
         } while (Math.abs(diff) > eps);
 
         return res;

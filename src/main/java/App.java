@@ -25,11 +25,11 @@ public class App {
 //            System.out.println("Value for Simpson without weight: " + integrals.getSimpsonLimit(function, eps, false));
 
             PolynomialFunction function = new PolynomialFunction(new double[]{-1, 1, 1, 1});
-            int n = 3;
+            int n = 5;
 
             System.out.println("Value for Gassian-Chebyshev: " + integrals.GaussChebyshev(function, n));
-            System.out.println("Value for Simpson with weight: " + integrals.NewtonCotes(function, eps, true));
-            System.out.println("Value for Simpson without weight: " + integrals.NewtonCotes(function, eps, false));
+            System.out.println("Value for Simpson with weight: " + integrals.NewtonCotes(function, -1, 1, eps, true));
+            System.out.println("Value for Simpson without weight: " + integrals.NewtonCotes(function, -1, 1, eps, false));
 
         } catch(Exception e) {
             System.out.println(e);
