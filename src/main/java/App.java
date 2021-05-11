@@ -12,16 +12,24 @@ public class App {
         try {
             Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Choose function");
-            MathFunction function = TUIMethods.chooseFunction();
-
+//            System.out.println("Choose function");
+//            MathFunction function = TUIMethods.chooseFunction();
+//
             Integrals integrals = new Integrals();
+//
+//            System.out.println("Type number of nodes: ");
+//            int n = scanner.nextInt();
+//
+//            System.out.println("Value for Gassian-Chebyshev: " + integrals.GaussChebyshev(function,  n));
+//            System.out.println("Value for Simpson with weight: " + integrals.getSimpsonLimit(function, eps, true));
+//            System.out.println("Value for Simpson without weight: " + integrals.getSimpsonLimit(function, eps, false));
 
-            System.out.println("Type number of nodes: ");
-            int n = scanner.nextInt();
+            PolynomialFunction function = new PolynomialFunction(new double[]{-1, 1, 1, 1});
+            int n = 3;
 
-            System.out.println("Value for Gassian-Chebyshev: " + integrals.GaussChebyshev(function,  n));
-            System.out.println("Value for Simpson: " + integrals.getSimpsonLimit(function, eps));
+            System.out.println("Value for Gassian-Chebyshev: " + integrals.GaussChebyshev(function, n));
+            System.out.println("Value for Simpson with weight: " + integrals.NewtonCotes(function, eps, true));
+            System.out.println("Value for Simpson without weight: " + integrals.NewtonCotes(function, eps, false));
 
         } catch(Exception e) {
             System.out.println(e);

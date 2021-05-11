@@ -14,64 +14,53 @@ public class Integrals {
         return res;
     }
 
-//    public double Simpson (MathFunction function, double a, double b, double eps) {
-//        double res = 0;
-//        int range = 1;
-//        double tmp;
-//        do {
-//            range *= 2;
-//            double len = (b - a) / range;
-//            tmp = res;
-//            res = multiplyByWeight(function, a) + multiplyByWeight(function, b);
-//            for (int i = 1; i < range / 2; i++) {
-//                res += 4 * multiplyByWeight(function, a + (2 * i - 1) * len);
-//                res += 2 * multiplyByWeight(function, a + (2 * i) * len);
-//            }
-//            res *= len / 3;
-//        } while (Math.abs(tmp - res) > eps);
-//        return res;
-//    }
-
-    public double Simpson (MathFunction function, double poczatek, double koniec, double eps) {
-        double wynik, temp, dlugosc, delta;
-        int podprzedzial = 1;
-        delta = koniec - poczatek;
-        wynik = 0;
+    public double CalcSimpson (MathFunction function, double a, double b, double eps, boolean withWeight) {
+        double res = 0;
+        int m = 1;       // ilosc podzialow
+        double prev = 0; // wartość poprzedniej iteracji
         do {
-            podprzedzial = podprzedzial * 2;
-            dlugosc = delta / podprzedzial;
-            temp = wynik;
-            wynik = 0;
-            wynik += multiplyByWeight(function, poczatek);
-            wynik += multiplyByWeight(function, koniec);
-            for (int i = 1; i < podprzedzial / 2; i++) {
-                wynik += 4 * multiplyByWeight(function, poczatek + (2 * i - 1) * dlugosc);
-                wynik += 2 * multiplyByWeight(function, poczatek + (2 * i) * dlugosc);
+            prev = res;
+            m *= 2;
+            double h = (b - a) / m;
+
+            if (withWeight) {
+                res = multiplyByWeight(function, a) + multiplyByWeight(function, b);
+                for (int i = 1; i <= m / 2 - 1; i++) {
+                    res += 2 * multiplyByWeight(function, a + (2 * i) * h);
+                    res += 4 * multiplyByWeight(function, a + (2 * i + 1) * h);
+                }
+            } else {
+                res = function.calculate(a) + function.calculate(b);
+                for (int i = 1; i <= m / 2 - 1; i++) {
+                    res += 2 * function.calculate(a + (2 * i) * h);
+                    res += 4 * function.calculate(a + (2 * i + 1) * h);
+                }
             }
-            wynik *= dlugosc / 3;
-        } while (Math.abs(temp - wynik) > eps);
-        return wynik;
+            res *= h;
+        } while (Math.abs(res - prev) > eps);
+        return res / 3;
     }
 
-    public double getSimpsonLimit (MathFunction function, double eps) {
+    public double NewtonCotes (MathFunction function, double eps, boolean withWeight) {
         double a = 0;
         double b = 0.5;
-        double tmp, res = 0;
+        double diff = 0; // różnica między iteracjami - do warunku końcowego
+        double res = 0;
         do {
-            tmp = Simpson(function, a, b, eps);
-            res += tmp;
+            diff = CalcSimpson(function, a, b, eps, withWeight);
+            res += diff;
             a = b;
             b += (1 - b) / 2;
-        } while (Math.abs(tmp) > eps);
+        } while (Math.abs(diff) > eps);
 
         a = -0.5;
         b = 0;
         do {
-            tmp = Simpson(function, a, b, eps);
-            res += tmp;
+            diff = CalcSimpson(function, a, b, eps, withWeight);
+            res += diff;
             b = a;
             a -= (1 - Math.abs(b)) / 2;
-        } while (Math.abs(tmp) > eps);
+        } while (Math.abs(diff) > eps);
 
         return res;
     }
