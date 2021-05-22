@@ -1,3 +1,5 @@
+import MathFunctions.*;
+
 import java.util.Scanner;
 
 public class TUIMethods {

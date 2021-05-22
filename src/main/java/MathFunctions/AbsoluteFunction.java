@@ -1,3 +1,7 @@
+package MathFunctions;
+
+import MathFunctions.MathFunction;
+
 public class AbsoluteFunction implements MathFunction {
 
     @Override

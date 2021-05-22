@@ -1,3 +1,7 @@
+package MathFunctions;
+
+import MathFunctions.MathFunction;
+
 public class PolynomialFunction implements MathFunction {
 
     private double[] factors;

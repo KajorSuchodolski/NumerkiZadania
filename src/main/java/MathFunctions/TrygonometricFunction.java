@@ -1,3 +1,7 @@
+package MathFunctions;
+
+import MathFunctions.MathFunction;
+
 public class TrygonometricFunction implements MathFunction {
 
     private double a, b, c;
