@@ -5,18 +5,41 @@ public class Integral {
     private final double eps;
     private final MathFunction inner;
     private final MathFunction outer;
+    private final MathFunction legendre;
 
-    public Integral(double eps, MathFunction inner, MathFunction outer) {
+    public Integral(double eps, MathFunction inner, MathFunction outer, MathFunction legendre) {
         this.eps = eps;
         this.inner = inner;
         this.outer = outer;
+        this.legendre = legendre;
+    }
+
+    public double getWeight(double x) {
+        return (1 / Math.sqrt(1 - x * x));
+    }
+
+    public double GaussChebyshev(int nodes) {
+        double res = 0;
+        if (outer != null) {
+            for (int i = 1; i <= nodes; i++) {
+                double node = Math.cos((2 * i - 1) * Math.PI / (2 * nodes));
+                res += outer.calculate(inner.calculate(node)) * legendre.calculate(node);
+            }
+            //return outer.calculate(inner.calculate(x)) * legendre.calculate(x) * getWeight(x);
+        } else {
+            for (int i = 1; i <= nodes; i++) {
+                double node = Math.cos((2 * i - 1) * Math.PI / (2 * nodes));
+                res += inner.calculate(node) * legendre.calculate(node);
+            }
+        }
+        return res * Math.PI / (nodes);
     }
 
     private double calculate(double x) {
         if (outer != null) {
-            return outer.calculate(inner.calculate(x));
+            return outer.calculate(inner.calculate(x)) * legendre.calculate(x);
         } else {
-            return inner.calculate(x);
+            return inner.calculate(x) * legendre.calculate(x);
         }
     }
 
@@ -30,7 +53,7 @@ public class Integral {
             diff = CalcSimpson(a, b);
             res += diff;
             a = b;
-            b += (end - b) / 2;
+            b += Math.abs(end - b) / 2;
         } while (Math.abs(diff) > eps);
 
         a = beginning / 2d;
@@ -39,7 +62,7 @@ public class Integral {
             diff = CalcSimpson(a, b);
             res += diff;
             b = a;
-            a -= (end - Math.abs(b)) / 2;
+            a -= Math.abs(beginning - b) / 2;
         } while (Math.abs(diff) > eps);
 
         return res;
