@@ -68,7 +68,7 @@ public class Integral {
         return res;
     }
 
-    private double CalcSimpson (double a, double b) {
+    public double CalcSimpson (double a, double b) {
         double res = 0;
         int m = 1;       // ilosc podzialow
         double prev = 0; // wartość poprzedniej iteracji
