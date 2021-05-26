@@ -39,6 +39,17 @@ public class Legendre {
         }
     }
 
+    private double changeScope(double x) {
+        return (2 * x - a - b)/(b - a);
+    }
+
+    private double calculate(double x) {
+        if (outer != null) {
+            return outer.calculate(inner.calculate(x));
+        } else {
+            return inner.calculate(x);
+        }
+    }
 
     public Legendre(int a, int b, int polynomialSize, MathFunction inner, MathFunction outer) {
         this.a = a;
@@ -57,6 +68,7 @@ public class Legendre {
     }
 
     public double getPolynomialValue(int n, double x) {
+        // schemat hornera z odwrocona kolejnoscia wspolczynnikow
         double y = legendreFactors[n][this.n - n];
         for(int i = n; i >= 0; i--) {
             y = y * x + legendreFactors[n][i];
@@ -64,7 +76,12 @@ public class Legendre {
         return y;
     }
 
+//    public double getError() {
+//
+//    }
+
     public double[][] getValues() {
+        // ak - wspolczynniki wielomianu aproksymacji (ktore beda mnozone przez kolejne wielomiany legendre'a)
         double[] ak = new double[n + 1];
         for (int k = 0; k <= n; k++) {
             // odwracanie kolejnosci wspolczynnikow legerendre'a aby byla zgodna z kolejnoscia funckji hornera
@@ -76,22 +93,28 @@ public class Legendre {
             }
 
             Integral integral = new Integral(0.0001, inner, outer, new PolynomialFunction(tmpArr));
-            ak[k] = (2 * k + 1) / 2d * integral.NewtonCotes(a, b);
+            ak[k] = (2 * k + 1) / 2d * integral.NewtonCotes(-1, 1);
         }
 
         // generowanie wartosci x i y wykresu
         int range = Math.abs(a - b) * 100 + 1;
         double[][] values = new double[range][2];
+        double errorSum = 0;
+
         for(int i = 0; i < range; i++) {
-            double tmpX = a + i * 0.01;
+            double tmpX = a + i * 0.01; // argument x dla ktorego liczymy wartosc
             values[i][0] = tmpX;
 
+            // liczenie wartosci wielomianu aproksymacji w punkcie tmpx
             double y = 0;
             for (int k = 0; k <= n; k++) {
                 y += ak[k] * getPolynomialValue(k, tmpX);
             }
+            errorSum += Math.abs(y - calculate(tmpX));
             values[i][1] = y;
         }
+        System.out.println("Błąd aproksymacji: " + errorSum / range);
+
         return values;
     }
 

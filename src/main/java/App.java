@@ -36,8 +36,8 @@ public class App {
 //            int b = scanner.nextInt();
 
             // TYMCZASOWO
-            int a = -1;
-            int b = 1;
+            int a = -2;
+            int b = 2;
 
  //         JavaPlot plot = new JavaPlot("C:\\gnuplot\\bin\\gnuplot.exe");
             JavaPlot plot = new JavaPlot();
