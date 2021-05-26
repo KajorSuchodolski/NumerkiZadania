@@ -29,15 +29,8 @@ public class App {
                 inner = TUIMethods.chooseFunction();
             }
 
-            System.out.println("Defining range <a;b>");
-//            System.out.println("Type a: ");
-//            int a = scanner.nextInt();
-//            System.out.println("Type b: ");
-//            int b = scanner.nextInt();
-
-            // TYMCZASOWO
-            int a = -2;
-            int b = 2;
+            int a = -1;
+            int b = 1;
 
  //         JavaPlot plot = new JavaPlot("C:\\gnuplot\\bin\\gnuplot.exe");
             JavaPlot plot = new JavaPlot();
